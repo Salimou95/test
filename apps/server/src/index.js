@@ -1,6 +1,13 @@
 import express from "express";
 import cors from "cors";
+import path from "node:path";
+import fs from "node:fs";
+import { fileURLToPath } from "node:url";
 import { db } from "./db.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// Build du frontend généré par `npm run build -w web`
+const webDist = path.join(__dirname, "../../web/dist");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -53,6 +60,17 @@ app.delete("/api/tasks/:id", (req, res) => {
   res.status(204).end();
 });
 
+// --- Frontend statique (production) ---
+// Si le build existe (déploiement Railway), Express sert le frontend.
+// En dev local, ce dossier n'existe pas : c'est Vite qui sert le front.
+if (fs.existsSync(webDist)) {
+  app.use(express.static(webDist));
+  // Fallback : toute route non-API renvoie index.html
+  app.get(/^\/(?!api\/).*/, (_req, res) => {
+    res.sendFile(path.join(webDist, "index.html"));
+  });
+}
+
 app.listen(PORT, () => {
-  console.log(`✅ Faux backend démarré sur http://localhost:${PORT}`);
+  console.log(`✅ Serveur démarré sur http://localhost:${PORT}`);
 });
