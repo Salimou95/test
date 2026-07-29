@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Monorepo Demo — Tâches</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1>📋 Mes tâches</h1>
+      <p class="subtitle">Frontend Vite + faux backend Express (en mémoire)</p>
+
+      <form id="new-task-form" class="new-task">
+        <input
+          id="new-task-input"
+          type="text"
+          placeholder="Nouvelle tâche…"
+          autocomplete="off"
+        />
+        <button type="submit">Ajouter</button>
+      </form>
+
+      <ul id="task-list" class="task-list"></ul>
+      <p id="status" class="status"></p>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
